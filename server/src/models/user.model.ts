@@ -1,7 +1,7 @@
 import { hash } from "bcrypt";
 import { HydratedDocument, Model, model, Schema } from "mongoose";
 
-interface IUser {
+export interface IUser {
   userName: string;
   email: string;
   password: string;
@@ -30,8 +30,10 @@ const userSchema = new Schema<IUser, UserModel>(
 );
 
 userSchema.pre("save", async function (next) {
-  const hashedPassword = await hash(this.password, 10);
-  this.password = hashedPassword;
+  if (this.isModified("password")) {
+    const hashedPassword = await hash(this.password, 10);
+    this.password = hashedPassword;
+  }
   next();
 });
 

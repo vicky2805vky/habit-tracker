@@ -1,11 +1,9 @@
 import { Request } from "express";
-import { AuthRequestBody } from "../constants/types";
+import { IUser } from "../models/user.model";
 import AppError from "../utils/AppError";
 import { isAlpha, isStrongPassword } from "validator";
 
-export const validateUserUpdateData = (
-  req: Request<{}, {}, AuthRequestBody>
-) => {
+export const validateUserUpdateData = (req: Request<{}, {}, IUser>) => {
   const ALLOWED_UPDATE_FIELDS = ["userName", "password"];
   const isUpdateValid = Object.keys(req.body).every((field) =>
     ALLOWED_UPDATE_FIELDS.includes(field)

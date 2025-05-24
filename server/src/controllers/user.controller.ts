@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { validateUserUpdateData } from "../validators/user.validator";
 import { sendErrorResponse } from "../utils/sendErrorResponse";
-import { AuthRequestBody } from "../constants/types";
+import { IUser } from "../models/user.model";
 
 export const getUserProfile = (req: Request, res: Response) => {
   res.json({
@@ -11,12 +11,13 @@ export const getUserProfile = (req: Request, res: Response) => {
 };
 
 export const updateUserProfile = async (
-  req: Request<{}, {}, AuthRequestBody>,
+  req: Request<{}, {}, IUser>,
   res: Response
 ) => {
   try {
     validateUserUpdateData(req);
     const { userName, password } = req.body;
+    console.log(userName, password);
     userName && (req.user.userName = userName);
     password && (req.user.password = password);
 

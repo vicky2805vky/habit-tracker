@@ -1,11 +1,11 @@
 import { Request } from "express";
-import { AuthRequestBody } from "../constants/types";
+import { IUser } from "../models/user.model";
 import AppError from "../utils/AppError";
 import { isAlpha, isEmail, isStrongPassword } from "validator";
 import { User } from "../models/user.model";
 import bcrypt from "bcrypt";
 
-export const validateSignupData = (req: Request<{}, {}, AuthRequestBody>) => {
+export const validateSignupData = (req: Request<{}, {}, IUser>) => {
   const { userName, email, password } = req.body;
 
   if (!userName || !email || !password) {
@@ -35,9 +35,7 @@ export const validateSignupData = (req: Request<{}, {}, AuthRequestBody>) => {
   }
 };
 
-export const validateSigninData = async (
-  req: Request<{}, {}, AuthRequestBody>
-) => {
+export const validateSigninData = async (req: Request<{}, {}, IUser>) => {
   const { email, password } = req.body;
 
   const throwInvalidCredentialError = () => {

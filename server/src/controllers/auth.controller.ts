@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from "express";
-import { AuthRequestBody } from "../constants/types";
+import { IUser } from "../models/user.model";
 import { sendErrorResponse } from "../utils/sendErrorResponse";
 import {
   validateSigninData,
@@ -10,7 +10,7 @@ import jwt from "jsonwebtoken";
 import config from "../configs/dotenv.config";
 
 export const signUpUser = async (
-  req: Request<{}, {}, AuthRequestBody>,
+  req: Request<{}, {}, IUser>,
   res: Response
 ) => {
   try {
@@ -38,7 +38,7 @@ export const signUpUser = async (
 };
 
 export const signInUser = async (
-  req: Request<{}, {}, AuthRequestBody>,
+  req: Request<{}, {}, IUser>,
   res: Response
 ) => {
   try {
