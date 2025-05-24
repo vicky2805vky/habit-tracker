@@ -7,6 +7,7 @@ import {
 import { CORS_OPTIONS } from "./constants/constants";
 import cookieParser from "cookie-parser";
 import authRouter from "./routers/auth.router";
+import userRouter from "./routers/user.router";
 
 const app = express();
 
@@ -15,6 +16,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/auth", authRouter);
+app.use("/user", userRouter);
 
 app.use(wildCardRouteHandler);
 app.use(errorRequestHandler);

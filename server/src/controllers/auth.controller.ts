@@ -24,15 +24,14 @@ export const signUpUser = async (
 
     await user.save();
 
-    const token = jwt.sign({ userId: user._id }, config.jwtSecretKey);
+    const token = jwt.sign({ userId: user._id }, config.jwtSecretKey, {
+      expiresIn: "7 days",
+    });
 
-    res
-      .status(201)
-      .cookie("token", token, { expires: new Date(Date.now() + 24 * 3600 * 7) })
-      .json({
-        message: "account created successfully",
-        data: user,
-      });
+    res.status(201).cookie("token", token).json({
+      message: "account created successfully",
+      data: user,
+    });
   } catch (error) {
     sendErrorResponse(res, error);
   }
@@ -44,13 +43,13 @@ export const signInUser = async (
 ) => {
   try {
     await validateSigninData(req);
-    const token = jwt.sign({ userId: req.user._id }, config.jwtSecretKey);
-    res
-      .cookie("token", token, { expires: new Date(Date.now() + 3600 * 24 * 7) })
-      .json({
-        message: "successfully signed in to the account",
-        data: req.user,
-      });
+    const token = jwt.sign({ userId: req.user._id }, config.jwtSecretKey, {
+      expiresIn: "7 days",
+    });
+    res.cookie("token", token).json({
+      message: "successfully signed in to the account",
+      data: req.user,
+    });
   } catch (error) {
     sendErrorResponse(res, error);
   }

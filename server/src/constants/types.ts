@@ -3,3 +3,7 @@ export interface AuthRequestBody {
   email: string;
   password: string;
 }
+
+export interface RequestCookie {
+  token: string;
+}
