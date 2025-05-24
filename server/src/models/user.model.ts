@@ -1,6 +1,15 @@
-import { model, Schema } from "mongoose";
+import { hash } from "bcrypt";
+import { HydratedDocument, Model, model, Schema } from "mongoose";
 
-const userSchema = new Schema(
+interface IUser {
+  userName: string;
+  email: string;
+  password: string;
+}
+
+type UserModel = Model<IUser>;
+
+const userSchema = new Schema<IUser, UserModel>(
   {
     userName: {
       type: String,
@@ -20,4 +29,12 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+userSchema.pre("save", async function (next) {
+  const hashedPassword = await hash(this.password, 10);
+  this.password = hashedPassword;
+  next();
+});
+
 export const User = model("User", userSchema);
+
+export type UserDoc = HydratedDocument<IUser>;

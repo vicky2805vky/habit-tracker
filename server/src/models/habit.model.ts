@@ -1,6 +1,12 @@
-import { model, Schema } from "mongoose";
+import { Date, HydratedDocument, Model, model, Schema } from "mongoose";
 
-const habitSchema = new Schema(
+interface IHabit {
+  userId: Schema.Types.ObjectId;
+  habitName: String;
+  startDate: Date;
+}
+type HabitModel = Model<IHabit>;
+const habitSchema = new Schema<IHabit, HabitModel>(
   {
     userId: {
       type: Schema.Types.ObjectId,
@@ -20,3 +26,4 @@ const habitSchema = new Schema(
 );
 
 export const Habit = model("Habit", habitSchema);
+export type HabitDoc = HydratedDocument<IHabit>;

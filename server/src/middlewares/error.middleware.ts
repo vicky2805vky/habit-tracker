@@ -8,15 +8,7 @@ export const errorRequestHandler: ErrorRequestHandler = (
   res,
   next
 ) => {
-  if (err instanceof AppError) {
-    sendErrorResponse(res, err);
-  } else {
-    res.status(500).json({
-      name: "internal server error",
-      message: `unexpected error occured: ${err.message}`,
-      ...(process.env.NODE_ENV === "development" && { stack: err.stack }),
-    });
-  }
+  sendErrorResponse(res, err);
 };
 
 export const wildCardRouteHandler: RequestHandler = (req, res) => {
