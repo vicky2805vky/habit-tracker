@@ -1,9 +1,9 @@
-import { Date, HydratedDocument, Model, model, Schema } from "mongoose";
+import { HydratedDocument, Model, model, Schema } from "mongoose";
 
-interface IHabit {
+export interface IHabit {
   userId: Schema.Types.ObjectId;
-  habitName: String;
-  startDate: Date;
+  habitName: string;
+  startDate?: Date;
 }
 type HabitModel = Model<IHabit>;
 const habitSchema = new Schema<IHabit, HabitModel>(
@@ -19,7 +19,8 @@ const habitSchema = new Schema<IHabit, HabitModel>(
     },
     startDate: {
       type: Date,
-      default: new Date(Date.now()),
+      required: true,
+      default: Date.now,
     },
   },
   { timestamps: true }

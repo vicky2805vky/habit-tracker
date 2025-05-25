@@ -1,13 +1,6 @@
-import {
-  Date,
-  HydratedDocument,
-  HydrateOptions,
-  Model,
-  model,
-  Schema,
-} from "mongoose";
+import { Date, HydratedDocument, Model, model, Schema } from "mongoose";
 
-interface IHabitLog {
+export interface IHabitLog {
   habitId: Schema.Types.ObjectId;
   Date: Date;
   completed: boolean;
