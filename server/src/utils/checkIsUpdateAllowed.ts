@@ -9,9 +9,10 @@ export const checkIsUpdateAllowed = (
   );
   if (!isUpdateAllowed) {
     throw new AppError(
-      "invalid data error",
-      "some provided fields are not valid",
-      422
+      422,
+      "failed to update",
+      "unprocessable entity",
+      "the request contains some invalid data"
     );
   }
 };

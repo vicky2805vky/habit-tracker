@@ -22,7 +22,9 @@ export const createHabit = async (
     await habit.save();
 
     res.status(201).json({
-      message: "new habit created successfully",
+      status: "success",
+      statusCode: 201,
+      message: "habit created successfully",
       data: habit,
     });
   } catch (error) {
@@ -35,7 +37,9 @@ export const getAllHabits = async (req: Request, res: Response) => {
   try {
     const allHabits = await Habit.find({ userId: req.user._id });
     res.json({
-      message: "habits fetched successfully",
+      status: "success",
+      statusCode: 200,
+      message: "data fetched successfully",
       data: allHabits,
     });
   } catch (error) {
@@ -52,7 +56,9 @@ export const updateHabit = async (
     const habit = await validateUpdateHabit(req);
     habit.save();
     res.json({
-      message: "habit updated successfully",
+      status: "success",
+      statusCode: 200,
+      message: "data updated successfully",
       body: habit,
     });
   } catch (error) {
@@ -64,8 +70,13 @@ export const deleteHabit = async (req: Request, res: Response) => {
   try {
     const habit = await validateHabitId(req.params.id);
 
-    const deletedHabit = await Habit.findByIdAndDelete(habit._id);
-    res.json({ message: "habit deleted successfully", data: habit });
+    await Habit.findByIdAndDelete(habit._id);
+    res.json({
+      status: "success",
+      statusCode: 200,
+      message: "data deleted successfully",
+      data: habit,
+    });
   } catch (error) {
     sendErrorResponse(res, error);
   }

@@ -14,7 +14,7 @@ export const signUpUser = async (
   res: Response
 ) => {
   try {
-    validateSignupData(req);
+    await validateSignupData(req);
 
     const user = new User({
       userName: req.body.userName,
@@ -29,6 +29,8 @@ export const signUpUser = async (
     });
 
     res.status(201).cookie("token", token).json({
+      status: "success",
+      statusCode: 201,
       message: "account created successfully",
       data: user,
     });
@@ -47,6 +49,8 @@ export const signInUser = async (
       expiresIn: "7 days",
     });
     res.cookie("token", token).json({
+      status: "success",
+      statusCode: 200,
       message: "successfully signed in to the account",
       data: req.user,
     });
@@ -57,6 +61,9 @@ export const signInUser = async (
 
 export const signOutUser: RequestHandler = (req, res) => {
   res.cookie("token", "", { expires: new Date(Date.now()) }).json({
+    status: "success",
+    statusCode: 200,
     message: "successfully signed out from the account",
+    data: null,
   });
 };

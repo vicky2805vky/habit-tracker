@@ -8,9 +8,10 @@ import { sendErrorResponse } from "../utils/sendErrorResponse";
 
 const throwUnauthorisedError = () => {
   throw new AppError(
-    "unauthorised request error",
-    "the user is not authorised for doing this action",
-    401
+    401,
+    "authorizationrequired",
+    "unauthorized",
+    "you are not allowed to do this action"
   );
 };
 
@@ -31,7 +32,13 @@ export const authoriseUser = async (
     if (!userId) throwUnauthorisedError();
     const loggedInUser = await User.findById(userId);
     if (!loggedInUser)
-      throw new AppError("404 not found error", "could not find the user", 404);
+      throw new AppError(
+        404,
+        "user not found",
+        "not found",
+        "failed to find the user"
+      );
+
     req.user = loggedInUser;
     next();
   } catch (error) {

@@ -11,9 +11,9 @@ const habitsRouter = Router();
 
 habitsRouter.use(authoriseUser);
 
-habitsRouter.post("/create", createHabit);
-habitsRouter.get("/get", getAllHabits);
-habitsRouter.patch("/edit/:id", updateHabit);
-habitsRouter.delete("/delete/:id", deleteHabit);
+habitsRouter.post("/", createHabit);
+habitsRouter.get("/", getAllHabits);
+habitsRouter.patch("/:id", updateHabit);
+habitsRouter.delete("/:id", deleteHabit);
 
 export default habitsRouter;

@@ -10,6 +10,6 @@ const userRouter = Router();
 userRouter.use(authoriseUser);
 
 userRouter.get("/profile", getUserProfile);
-userRouter.patch("/update", updateUserProfile);
+userRouter.patch("/profile", updateUserProfile);
 
 export default userRouter;

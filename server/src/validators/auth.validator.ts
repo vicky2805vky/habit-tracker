@@ -1,66 +1,55 @@
 import { Request } from "express";
 import { IUser } from "../models/user.model";
 import AppError from "../utils/AppError";
-import { isAlpha, isEmail, isStrongPassword } from "validator";
+import { isEmail, isStrongPassword } from "validator";
 import { User } from "../models/user.model";
 import bcrypt from "bcrypt";
 
-export const validateSignupData = (req: Request<{}, {}, IUser>) => {
+const throwInvalidCredentialError = (description: string) => {
+  throw new AppError(400, "invalid credentials", "bad request", description);
+};
+
+export const validateSignupData = async (req: Request<{}, {}, IUser>) => {
   const { userName, email, password } = req.body;
 
   if (!userName || !email || !password) {
-    throw new AppError(
-      "invalid credentials error",
-      "userName, email and password fields are required",
-      400
+    throwInvalidCredentialError(
+      "username, email and password fields are required"
     );
-  } else if (!isAlpha(userName) || userName.length > 30) {
-    throw new AppError(
-      "invalid credentials error",
-      "username must only contain letters and should not exceed the length of 30",
-      400
+  } else if (!userName.match(/[a-z A-Z]/) || userName.length > 30) {
+    throwInvalidCredentialError(
+      "username must only contain letters and should not exceed the length of 30"
     );
   } else if (!isEmail(email)) {
-    throw new AppError(
-      "invalid credentials error",
-      "invalid email address",
-      400
-    );
+    throwInvalidCredentialError("invalid email address");
   } else if (!isStrongPassword(password)) {
-    throw new AppError(
-      "invalid credentials error",
-      "please enter a strong password",
-      400
-    );
+    throwInvalidCredentialError("please enter a strong password");
+  }
+
+  const doesUserExists = await User.findOne({ email });
+  if (doesUserExists) {
+    throwInvalidCredentialError("user with this email already exists");
   }
 };
 
 export const validateSigninData = async (req: Request<{}, {}, IUser>) => {
   const { email, password } = req.body;
 
-  const throwInvalidCredentialError = () => {
-    throw new AppError(
-      "invalid credentials error",
-      "some of the provided credentials are not valid",
-      400
-    );
-  };
-
   if (!email || !isEmail(email) || !password) {
-    throwInvalidCredentialError();
+    throwInvalidCredentialError("invalid email Id or password");
   }
 
   const existingUser = await User.findOne({ email });
 
   if (!existingUser) {
-    throwInvalidCredentialError();
+    throwInvalidCredentialError("invalid email Id or password");
     return;
   }
 
   const isValidPassword = await bcrypt.compare(password, existingUser.password);
 
   if (!isValidPassword) {
-    throwInvalidCredentialError();
+    throwInvalidCredentialError("invalid email Id or password");
   }
 
   req.user = existingUser;

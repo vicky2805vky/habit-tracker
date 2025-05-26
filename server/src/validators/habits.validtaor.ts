@@ -1,4 +1,3 @@
-import { isAlpha } from "validator";
 import { Habit, IHabit } from "../models/habit.model";
 import AppError from "../utils/AppError";
 import { setDateToMidnight } from "../utils/setDateToMidnight";
@@ -6,8 +5,13 @@ import { checkIsUpdateAllowed } from "../utils/checkIsUpdateAllowed";
 import { Request } from "express";
 import { isValidObjectId } from "mongoose";
 
-const throwInvalidDataError = (message: string) => {
-  throw new AppError("invalid data error", message, 400);
+const throwInvalidDataError = (description: string) => {
+  throw new AppError(
+    400,
+    "action failed due to invalid request",
+    "bad request",
+    description
+  );
 };
 
 export const validateCreateHabit = (habit: IHabit) => {
@@ -26,11 +30,7 @@ export const validateUpdateHabit = async (
   const { habitName, startDate } = req.body;
 
   if (!habitName && !startDate)
-    throw new AppError(
-      "invalid data error",
-      "please provide some value to update the habit",
-      400
-    );
+    throwInvalidDataError("please provide some data to update");
 
   if (habitName) {
     validateHabitName(habitName);
@@ -45,12 +45,23 @@ export const validateUpdateHabit = async (
 
 export const validateHabitId = async (habitId: string) => {
   if (!isValidObjectId(habitId))
-    throw new AppError("habit not found", "can't find the provided habit", 404);
+    throw new AppError(
+      404,
+      "habit not found",
+      "not found",
+      "can not find the habit"
+    );
 
   const habit = await Habit.findById(habitId);
 
   if (!habit)
-    throw new AppError("habit not found", "can't find the provided habit", 404);
+    throw new AppError(
+      404,
+      "habit not found",
+      "not found",
+      "can not find the habit"
+    );
+
   return habit;
 };
 
@@ -59,7 +70,7 @@ const validateHabitName = (habitName: string) => {
     throwInvalidDataError("habitName is required");
   } else if (!habitName.length || habitName.length > 20) {
     throwInvalidDataError("habitName should be 1 - 20 characters long");
-  } else if (!isAlpha(habitName)) {
+  } else if (!habitName.match(/[a-z A-Z]/)) {
     throwInvalidDataError("habitName should only contains alphabetic letter");
   }
 };

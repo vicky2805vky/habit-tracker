@@ -13,8 +13,9 @@ export const errorRequestHandler: ErrorRequestHandler = (
 
 export const wildCardRouteHandler: RequestHandler = (req, res) => {
   throw new AppError(
-    "path not found error",
-    `cannot ${req.method} ${req.path}`,
-    404
+    404,
+    "path not found",
+    "not found",
+    `cannot ${req.method} ${req.path}`
   );
 };

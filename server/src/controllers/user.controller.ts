@@ -5,7 +5,9 @@ import { IUser } from "../models/user.model";
 
 export const getUserProfile = (req: Request, res: Response) => {
   res.json({
-    message: "successfully fetched the user data",
+    status: "success",
+    statusCode: 200,
+    message: "data fetched successfully",
     data: req.user,
   });
 };
@@ -17,14 +19,16 @@ export const updateUserProfile = async (
   try {
     validateUserUpdateData(req);
     const { userName, password } = req.body;
-    console.log(userName, password);
+
     userName && (req.user.userName = userName);
     password && (req.user.password = password);
 
     await req.user.save();
 
     res.json({
-      message: "successfully updated the profile",
+      status: "success",
+      statusCode: 200,
+      message: "data updated successfully",
       data: req.user,
     });
   } catch (error) {
