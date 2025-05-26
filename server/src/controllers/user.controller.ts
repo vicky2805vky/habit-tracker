@@ -2,14 +2,10 @@ import { Request, Response } from "express";
 import { validateUserUpdateData } from "../validators/user.validator";
 import { sendErrorResponse } from "../utils/sendErrorResponse";
 import { IUser } from "../models/user.model";
+import { sendSuccessResponse } from "../utils/sendSuccessResponse";
 
 export const getUserProfile = (req: Request, res: Response) => {
-  res.json({
-    status: "success",
-    statusCode: 200,
-    message: "data fetched successfully",
-    data: req.user,
-  });
+  sendSuccessResponse(res, "data fetched successfully", req.user);
 };
 
 export const updateUserProfile = async (
@@ -25,12 +21,7 @@ export const updateUserProfile = async (
 
     await req.user.save();
 
-    res.json({
-      status: "success",
-      statusCode: 200,
-      message: "data updated successfully",
-      data: req.user,
-    });
+    sendSuccessResponse(res, "data updated successfully", req.user);
   } catch (error) {
     sendErrorResponse(res, error);
   }

@@ -6,6 +6,7 @@ import {
   validateHabitId,
   validateUpdateHabit,
 } from "../validators/habits.validtaor";
+import { sendSuccessResponse } from "../utils/sendSuccessResponse";
 
 export const createHabit = async (
   req: Request<{}, {}, IHabit>,
@@ -21,12 +22,7 @@ export const createHabit = async (
 
     await habit.save();
 
-    res.status(201).json({
-      status: "success",
-      statusCode: 201,
-      message: "habit created successfully",
-      data: habit,
-    });
+    sendSuccessResponse(res, "habit created successfully", habit, 201);
   } catch (error) {
     sendErrorResponse(res, error);
     error;
@@ -36,12 +32,7 @@ export const createHabit = async (
 export const getAllHabits = async (req: Request, res: Response) => {
   try {
     const allHabits = await Habit.find({ userId: req.user._id });
-    res.json({
-      status: "success",
-      statusCode: 200,
-      message: "data fetched successfully",
-      data: allHabits,
-    });
+    sendSuccessResponse(res, "data fetched successfully", allHabits);
   } catch (error) {
     sendErrorResponse;
     error;
@@ -55,12 +46,7 @@ export const updateHabit = async (
   try {
     const habit = await validateUpdateHabit(req);
     habit.save();
-    res.json({
-      status: "success",
-      statusCode: 200,
-      message: "data updated successfully",
-      body: habit,
-    });
+    sendSuccessResponse(res, "data updated successfully", habit);
   } catch (error) {
     sendErrorResponse(res, error);
   }
@@ -71,12 +57,7 @@ export const deleteHabit = async (req: Request, res: Response) => {
     const habit = await validateHabitId(req.params.id);
 
     await Habit.findByIdAndDelete(habit._id);
-    res.json({
-      status: "success",
-      statusCode: 200,
-      message: "data deleted successfully",
-      data: habit,
-    });
+    sendSuccessResponse(res, "data deleted successfully", habit);
   } catch (error) {
     sendErrorResponse(res, error);
   }

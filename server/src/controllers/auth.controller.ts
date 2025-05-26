@@ -8,6 +8,7 @@ import {
 import { User } from "../models/user.model";
 import jwt from "jsonwebtoken";
 import config from "../configs/dotenv.config";
+import { sendSuccessResponse } from "../utils/sendSuccessResponse";
 
 export const signUpUser = async (
   req: Request<{}, {}, IUser>,
@@ -28,12 +29,8 @@ export const signUpUser = async (
       expiresIn: "7 days",
     });
 
-    res.status(201).cookie("token", token).json({
-      status: "success",
-      statusCode: 201,
-      message: "account created successfully",
-      data: user,
-    });
+    res.cookie("token", token);
+    sendSuccessResponse(res, "account created successfully", user, 201);
   } catch (error) {
     sendErrorResponse(res, error);
   }
@@ -48,22 +45,14 @@ export const signInUser = async (
     const token = jwt.sign({ userId: req.user._id }, config.jwtSecretKey, {
       expiresIn: "7 days",
     });
-    res.cookie("token", token).json({
-      status: "success",
-      statusCode: 200,
-      message: "successfully signed in to the account",
-      data: req.user,
-    });
+    res.cookie("token", token);
+    sendSuccessResponse(res, "successfully signed in to the account", req.user);
   } catch (error) {
     sendErrorResponse(res, error);
   }
 };
 
 export const signOutUser: RequestHandler = (req, res) => {
-  res.cookie("token", "", { expires: new Date(Date.now()) }).json({
-    status: "success",
-    statusCode: 200,
-    message: "successfully signed out from the account",
-    data: null,
-  });
+  res.cookie("token", "", { expires: new Date(Date.now()) });
+  sendSuccessResponse(res, "successfully signed out from the account", null);
 };

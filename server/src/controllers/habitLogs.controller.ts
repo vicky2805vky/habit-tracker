@@ -4,6 +4,7 @@ import AppError from "../utils/AppError";
 import { HabitLog } from "../models/habitLog.model";
 import { validateModelId } from "../validators/validateModelId";
 import { Habit } from "../models/habit.model";
+import { sendSuccessResponse } from "../utils/sendSuccessResponse";
 
 export type RequestParams = {
   habitId: string;
@@ -18,12 +19,8 @@ export const createLog = async (req: Request<RequestParams>, res: Response) => {
       habitId,
     });
     await log.save();
-    res.status(201).json({
-      status: "success",
-      statusCode: 200,
-      message: "log created successfully",
-      data: log,
-    });
+
+    sendSuccessResponse(res, "log created successfully", log, 201);
   } catch (error: any) {
     if (error.code === 11000)
       throw new AppError(
@@ -41,12 +38,7 @@ export const getLog = async (req: Request<RequestParams>, res: Response) => {
     const { habitId } = req.params;
     await validateModelId(habitId, Habit);
     const habitLogs = await HabitLog.find({ habitId });
-    res.json({
-      status: "success",
-      statusCode: 200,
-      message: "data fetched successfully",
-      data: habitLogs,
-    });
+    sendSuccessResponse(res, "data fetched successfully", habitLogs);
   } catch (error) {
     sendErrorResponse(res, error);
   }
@@ -58,12 +50,7 @@ export const deleteLog = async (req: Request<RequestParams>, res: Response) => {
     await validateModelId(habitId, Habit);
     await validateModelId(id, HabitLog);
     const habitLog = await HabitLog.findOneAndDelete({ habitId, _id: id });
-    res.json({
-      status: "success",
-      statusCode: 200,
-      message: "data deleted successfully",
-      data: habitLog,
-    });
+    sendSuccessResponse(res, "data deleted successfully", habitLog);
   } catch (error) {
     sendErrorResponse(res, error);
   }
