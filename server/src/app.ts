@@ -9,6 +9,7 @@ import cookieParser from "cookie-parser";
 import authRouter from "./routers/auth.router";
 import userRouter from "./routers/user.router";
 import habitsRouter from "./routers/habits.router";
+import habitLogRouter from "./routers/habitLogs.router";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/habits", habitsRouter);
+app.use("/habits/", habitLogRouter);
 
 app.use(wildCardRouteHandler);
 app.use(errorRequestHandler);
