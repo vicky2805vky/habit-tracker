@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { sendErrorResponse } from "../utils/sendErrorResponse";
-import AppError from "../utils/AppError";
 import { HabitLog } from "../models/habitLog.model";
 import { validateModelId } from "../validators/validateModelId";
 import { Habit } from "../models/habit.model";
@@ -19,16 +18,8 @@ export const createLog = async (req: Request<RequestParams>, res: Response) => {
       habitId,
     });
     await log.save();
-
     sendSuccessResponse(res, "log created successfully", log, 201);
   } catch (error: any) {
-    if (error.code === 11000)
-      throw new AppError(
-        400,
-        "failed to log the habit",
-        "bad request",
-        "This habit is already logged today"
-      );
     sendErrorResponse(res, error);
   }
 };

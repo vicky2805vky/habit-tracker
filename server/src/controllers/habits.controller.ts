@@ -7,6 +7,7 @@ import {
 } from "../validators/habits.validtaor";
 import { sendSuccessResponse } from "../utils/sendSuccessResponse";
 import { validateModelId } from "../validators/validateModelId";
+import { HabitLog } from "../models/habitLog.model";
 
 export const createHabit = async (
   req: Request<{}, {}, IHabit>,
@@ -25,7 +26,6 @@ export const createHabit = async (
     sendSuccessResponse(res, "habit created successfully", habit, 201);
   } catch (error) {
     sendErrorResponse(res, error);
-    error;
   }
 };
 
@@ -34,8 +34,7 @@ export const getAllHabits = async (req: Request, res: Response) => {
     const allHabits = await Habit.find({ userId: req.user._id });
     sendSuccessResponse(res, "data fetched successfully", allHabits);
   } catch (error) {
-    sendErrorResponse;
-    error;
+    sendErrorResponse(res, error);
   }
 };
 
@@ -45,7 +44,7 @@ export const updateHabit = async (
 ) => {
   try {
     const habit = await validateUpdateHabit(req);
-    habit.save();
+    await habit.save();
     sendSuccessResponse(res, "data updated successfully", habit);
   } catch (error) {
     sendErrorResponse(res, error);
@@ -56,6 +55,7 @@ export const deleteHabit = async (req: Request, res: Response) => {
   try {
     const habit = await validateModelId(req.params.id, Habit);
 
+    await HabitLog.deleteMany({ habitId: habit._id });
     await Habit.findByIdAndDelete(habit._id);
     sendSuccessResponse(res, "data deleted successfully", habit);
   } catch (error) {

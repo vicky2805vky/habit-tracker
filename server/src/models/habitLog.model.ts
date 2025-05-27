@@ -1,5 +1,6 @@
 import { HydratedDocument, Model, model, Schema } from "mongoose";
 import { setDateToMidnight } from "../utils/setDateToMidnight";
+import AppError from "../utils/AppError";
 
 export interface IHabitLog {
   habitId: Schema.Types.ObjectId;
@@ -24,7 +25,19 @@ const habitLogSchema = new Schema<IHabitLog, HabitLogModel>({
   },
 });
 
-habitLogSchema.index({ habitId: 1, date: 1 }, { unique: true });
+habitLogSchema.pre("save", async function (next) {
+  const { date, habitId } = this;
+  const existingHabit = await HabitLog.findOne({ habitId, date });
+  if (existingHabit) {
+    throw new AppError(
+      400,
+      "Failed to log the habit",
+      "bad request",
+      "this habit was already logged today"
+    );
+  }
+  next();
+});
 
 export const HabitLog = model("HabitLog", habitLogSchema);
 export type HabitLogDoc = HydratedDocument<IHabitLog>;
