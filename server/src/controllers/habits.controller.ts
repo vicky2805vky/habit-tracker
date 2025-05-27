@@ -3,10 +3,10 @@ import { sendErrorResponse } from "../utils/sendErrorResponse";
 import { Habit, IHabit } from "../models/habit.model";
 import {
   validateCreateHabit,
-  validateHabitId,
   validateUpdateHabit,
 } from "../validators/habits.validtaor";
 import { sendSuccessResponse } from "../utils/sendSuccessResponse";
+import { validateModelId } from "../validators/validateModelId";
 
 export const createHabit = async (
   req: Request<{}, {}, IHabit>,
@@ -54,7 +54,7 @@ export const updateHabit = async (
 
 export const deleteHabit = async (req: Request, res: Response) => {
   try {
-    const habit = await validateHabitId(req.params.id);
+    const habit = await validateModelId(req.params.id, Habit);
 
     await Habit.findByIdAndDelete(habit._id);
     sendSuccessResponse(res, "data deleted successfully", habit);

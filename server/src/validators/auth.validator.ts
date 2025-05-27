@@ -16,7 +16,7 @@ export const validateSignupData = async (req: Request<{}, {}, IUser>) => {
     throwInvalidCredentialError(
       "username, email and password fields are required"
     );
-  } else if (!userName.match(/[a-z A-Z]/) || userName.length > 30) {
+  } else if (!/^[a-z A-Z]+$/.test(userName) || userName.length > 30) {
     throwInvalidCredentialError(
       "username must only contain letters and should not exceed the length of 30"
     );

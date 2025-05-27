@@ -4,6 +4,7 @@ import { setDateToMidnight } from "../utils/setDateToMidnight";
 import { checkIsUpdateAllowed } from "../utils/checkIsUpdateAllowed";
 import { Request } from "express";
 import { isValidObjectId } from "mongoose";
+import { validateModelId } from "./validateModelId";
 
 const throwInvalidDataError = (description: string) => {
   throw new AppError(
@@ -26,7 +27,7 @@ export const validateUpdateHabit = async (
   const ALLOWED_UPDATES = ["habitName", "startDate"];
   checkIsUpdateAllowed(ALLOWED_UPDATES, req.body);
 
-  const habit = await validateHabitId(req.params.id);
+  const habit = await validateModelId(req.params.id, Habit);
   const { habitName, startDate } = req.body;
 
   if (!habitName && !startDate)
@@ -43,33 +44,11 @@ export const validateUpdateHabit = async (
   return habit;
 };
 
-export const validateHabitId = async (habitId: string) => {
-  if (!isValidObjectId(habitId))
-    throw new AppError(
-      404,
-      "habit not found",
-      "not found",
-      "can not find the habit"
-    );
-
-  const habit = await Habit.findById(habitId);
-
-  if (!habit)
-    throw new AppError(
-      404,
-      "habit not found",
-      "not found",
-      "can not find the habit"
-    );
-
-  return habit;
-};
-
 const validateHabitName = (habitName: string) => {
   if (!habitName) {
     throwInvalidDataError("habitName is required");
-  } else if (!habitName.length || habitName.length > 20) {
-    throwInvalidDataError("habitName should be 1 - 20 characters long");
+  } else if (habitName.length > 50) {
+    throwInvalidDataError("habitName should be 1 - 50 characters long");
   } else if (!habitName.match(/[a-z A-Z]/)) {
     throwInvalidDataError("habitName should only contains alphabetic letter");
   }

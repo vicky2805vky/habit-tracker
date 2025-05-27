@@ -1,7 +1,8 @@
 import { isValidObjectId, Model } from "mongoose";
 import AppError from "../utils/AppError";
+import { HydratedDocument } from "mongoose";
 
-const throwNotfoundError = () => {
+const throwNotfoundError: () => never = () => {
   throw new AppError(
     404,
     "data not found",
@@ -10,11 +11,16 @@ const throwNotfoundError = () => {
   );
 };
 
-export const validateModelId = async <T>(id: string, Model: Model<T>) => {
+export const validateModelId = async <T>(
+  id: string,
+  Model: Model<T>
+): Promise<HydratedDocument<T>> => {
   if (!isValidObjectId(id)) throwNotfoundError();
 
   const model = await Model.findById(id);
-  if (!model) throwNotfoundError();
+  if (!model) {
+    throwNotfoundError();
+  }
 
   return model;
 };

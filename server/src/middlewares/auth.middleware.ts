@@ -9,7 +9,7 @@ import { sendErrorResponse } from "../utils/sendErrorResponse";
 const throwUnauthorisedError = () => {
   throw new AppError(
     401,
-    "authorizationrequired",
+    "authorization required",
     "unauthorized",
     "you are not allowed to do this action"
   );

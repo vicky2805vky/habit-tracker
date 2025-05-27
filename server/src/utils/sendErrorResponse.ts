@@ -23,6 +23,13 @@ export const sendErrorResponse = (res: Response, err: any) => {
       "authorization required",
       "you are not allowed to do this action"
     );
+  } else if (err instanceof SyntaxError && "body" in err) {
+    errorResponse = setErrorResponse(
+      400,
+      "bad request",
+      "invalid request format",
+      "malformed JSON in request body"
+    );
   }
 
   res.status(errorResponse.statusCode).json({
