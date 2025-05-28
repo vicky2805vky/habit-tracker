@@ -2,14 +2,15 @@ import {
   DropdownMenu,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import UserAvatar from "./UserAvatar";
+import AvatarIcon from "../../../components/AvatarIcon";
 import AuthMenu from "./AuthMenu";
+import { FaUser } from "react-icons/fa";
 
 const AuthButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <UserAvatar />
+        <AvatarIcon fallback={<FaUser />} />
       </DropdownMenuTrigger>
       <AuthMenu />
     </DropdownMenu>

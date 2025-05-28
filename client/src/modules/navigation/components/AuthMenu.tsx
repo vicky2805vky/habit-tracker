@@ -8,7 +8,7 @@ import { Link } from "react-router";
 
 const AuthMenu = () => {
   return (
-    <DropdownMenuContent>
+    <DropdownMenuContent align="end">
       <DropdownMenuLabel>My Account</DropdownMenuLabel>
       <DropdownMenuSeparator />
       <DropdownMenuItem>Profile</DropdownMenuItem>

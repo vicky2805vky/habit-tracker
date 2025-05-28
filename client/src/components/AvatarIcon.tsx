@@ -1,15 +1,19 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FaUser } from "react-icons/fa";
+import type { ReactNode } from "react";
 
-const UserAvatar = () => {
+type avatarIconProps = {
+  fallback: ReactNode;
+};
+
+const AvatarIcon = ({ fallback }: avatarIconProps) => {
   return (
     <Avatar>
       <AvatarImage src="" />
       <AvatarFallback className="text-secondary-foreground">
-        <FaUser />
+        {fallback}
       </AvatarFallback>
     </Avatar>
   );
 };
 
-export default UserAvatar;
+export default AvatarIcon;
