@@ -12,7 +12,12 @@ const ToggleTheme = () => {
     dispatch(toggleTheme({}));
   };
   return (
-    <Button size="icon" onClick={changeTheme}>
+    <Button
+      size="icon"
+      variant="outline"
+      className="rounded-full border-none"
+      onClick={changeTheme}
+    >
       {theme === "dark" ? <BsMoonStarsFill /> : <IoSunny />}
       <p className="sr-only">toggle theme</p>
     </Button>

@@ -18,8 +18,6 @@ const AuthLayout = () => {
   const key: keyof typeof authFormContents =
     pathname.split("/").at(-1) === "sign-up" ? "signUp" : "signIn";
 
-  console.log(pathname);
-
   if (pathname === "/auth/") return null;
   return (
     <div className="flex h-full items-center justify-center">
