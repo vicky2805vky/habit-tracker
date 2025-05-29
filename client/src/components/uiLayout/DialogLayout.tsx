@@ -11,14 +11,18 @@ import type { ReactNode } from "react";
 
 type dialogLayoutProps = {
   trigger: ReactNode;
+  triggerStyle?: string;
   title: string;
   description?: string;
   children: ReactNode;
-  footer: ReactNode;
+  footer?: ReactNode;
 };
+
+<button className=""></button>;
 
 const DialogLayout = ({
   trigger,
+  triggerStyle,
   title,
   description,
   children,
@@ -26,7 +30,7 @@ const DialogLayout = ({
 }: dialogLayoutProps) => {
   return (
     <Dialog>
-      <DialogTrigger className="w-full">{trigger}</DialogTrigger>
+      <DialogTrigger className={triggerStyle}>{trigger}</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{title}</DialogTitle>
