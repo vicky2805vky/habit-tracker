@@ -1,13 +1,5 @@
-import AvatarIcon from "@/components/AvatarIcon";
-import {
-  DropdownMenuItem,
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { GoHeartFill, GoKebabHorizontal } from "react-icons/go";
+import { GoHeartFill } from "react-icons/go";
+import HabitCardMenu from "./components/HabitCardMenu";
 
 const HabitCard = () => {
   return (
@@ -25,19 +17,3 @@ const HabitCard = () => {
 };
 
 export default HabitCard;
-
-const HabitCardMenu = () => {
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger>
-        <AvatarIcon fallback={<GoKebabHorizontal />} />
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>Edit</DropdownMenuItem>
-        <DropdownMenuItem>Delete</DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};
