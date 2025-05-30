@@ -1,14 +1,16 @@
-import { Button } from "@/components/ui/button";
+import { buttonVariants } from "@/components/ui/button";
 import { FaPlus } from "react-icons/fa";
 import HabitCard from "../habitCard/HabitCard";
+import { Link } from "react-router";
+import { cn } from "@/lib/utils";
 const Dashboard = () => {
   return (
     <div className="space-y-5 p-3">
       <div className="flex items-center justify-between">
         <p className="text-lg font-bold md:text-xl">HELLO USER!</p>
-        <Button>
+        <Link to="/habit/create" className={cn(buttonVariants())}>
           <FaPlus />
-        </Button>
+        </Link>
       </div>
       <div className="grid grid-cols-[_repeat(auto-fit,minmax(250px,1fr))] gap-3">
         <HabitCard />

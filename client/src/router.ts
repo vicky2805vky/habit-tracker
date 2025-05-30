@@ -4,6 +4,7 @@ import AuthLayout from "./modules/auth/AuthLayout";
 import SignUpForm from "./modules/auth/components/SignUpForm";
 import SignInForm from "./modules/auth/components/SignInForm";
 import Dashboard from "./modules/dashboard/Dashboard";
+import HabitForm from "./modules/habitForm/HabitFormLayout";
 
 export const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ export const router = createBrowserRouter([
           { path: "/auth/sign-up", Component: SignUpForm },
           { path: "/auth/sign-in", Component: SignInForm },
         ],
+      },
+      {
+        path: "/habit/create",
+        Component: HabitForm,
       },
     ],
   },
