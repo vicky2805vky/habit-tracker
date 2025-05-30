@@ -20,7 +20,7 @@ const AuthLayout = () => {
 
   if (pathname === "/auth/") return null;
   return (
-    <div className="flex h-full items-center justify-center">
+    <div className="flex h-5/6 items-center justify-center">
       <div className="w-[300px] md:w-[350px]">
         <CardLayout
           {...authFormContents[key]}

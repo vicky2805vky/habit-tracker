@@ -19,14 +19,8 @@ const FormControl = ({
       <label htmlFor={name} className="capitalize">
         {name}
       </label>
-      <Input
-        placeholder={name}
-        id={name}
-        type={type}
-        required
-        {...attributes}
-      />
-      <p className="text-red-600">{error}</p>
+      <Input placeholder={name} id={name} type={type} {...attributes} />
+      <p className="text-red-500">{error}</p>
     </div>
   );
 };
