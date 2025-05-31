@@ -9,7 +9,7 @@ const HabitCard = () => {
         <p>Habit Name</p>
       </div>
       <div className="flex items-center gap-3">
-        <input type="checkbox" className="size-5" checked />
+        <input type="checkbox" className="size-5" />
         <HabitCardMenu />
       </div>
     </div>

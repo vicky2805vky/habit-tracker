@@ -9,7 +9,7 @@ export const formSchema = z.object({
 });
 
 export const extendedFormSchema = formSchema.extend({
-  username: z.string().nonempty("username is required"),
+  userName: z.string().nonempty("username is required"),
 });
 
 export type FormFields = z.infer<typeof formSchema>;

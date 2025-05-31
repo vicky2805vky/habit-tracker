@@ -3,9 +3,12 @@ import {
   extendedFormSchema,
   type ExtendedFormFields,
 } from "@/constants/AuthFormSchema";
+import { signUpUser } from "@/services/apis/auth.api";
+import type { AppDispatch } from "@/services/store";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router";
 
 const SignUpForm = () => {
   const {
@@ -15,18 +18,23 @@ const SignUpForm = () => {
   } = useForm<ExtendedFormFields>({
     resolver: zodResolver(extendedFormSchema),
   });
+  const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
+  const signup: SubmitHandler<ExtendedFormFields> = (data) => {
+    dispatch(signUpUser(data))
+      .unwrap()
+      .then(() => {
+        navigate("/");
+      });
+  };
   return (
-    <form
-      className="space-y-3"
-      id="auth-form"
-      onSubmit={handleSubmit(() => {})}
-    >
+    <form className="space-y-3" id="auth-form" onSubmit={handleSubmit(signup)}>
       <FormControl
         name="username"
         attributes={{
-          ...register("username"),
+          ...register("userName"),
         }}
-        error={errors.username?.message}
+        error={errors.userName?.message}
       />
       <FormControl
         name="email"

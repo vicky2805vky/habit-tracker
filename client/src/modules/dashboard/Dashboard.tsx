@@ -3,11 +3,16 @@ import { FaPlus } from "react-icons/fa";
 import HabitCard from "../habitCard/HabitCard";
 import { Link } from "react-router";
 import { cn } from "@/lib/utils";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/services/store";
 const Dashboard = () => {
+  const userName = useSelector((state: RootState) => state.user?.userName);
   return (
     <div className="space-y-5 p-3">
       <div className="flex items-center justify-between">
-        <p className="text-lg font-bold md:text-xl">HELLO USER!</p>
+        <p className="text-lg font-bold md:text-xl">
+          HELLO {userName?.toUpperCase()}!
+        </p>
         <Link to="/habit/create" className={cn(buttonVariants())}>
           <FaPlus />
         </Link>
