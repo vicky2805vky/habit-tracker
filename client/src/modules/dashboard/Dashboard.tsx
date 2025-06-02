@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/services/store";
 const Dashboard = () => {
-  const userName = useSelector((state: RootState) => state.user?.userName);
+  const userName = useSelector((state: RootState) => state.user.user?.userName);
   const habits = useSelector((state: RootState) => state.habits);
   return (
     <div className="space-y-5 p-3">

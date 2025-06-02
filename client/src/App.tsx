@@ -7,10 +7,12 @@ import { useEffect } from "react";
 import { Toaster } from "sonner";
 import { fetchUser } from "./services/apis/auth.api";
 import { getHabits } from "./services/apis/habits.api";
+import { removeUser } from "./services/slices/user.slice";
+import { clearHabits } from "./services/slices/habit.slice";
 
 const App = () => {
   const theme = useSelector<RootState>((state) => state.app.theme);
-  const user = useSelector<RootState>((state) => state.user);
+  const user = useSelector<RootState>((state) => state.user.user);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch: AppDispatch = useDispatch();
@@ -27,8 +29,13 @@ const App = () => {
   }, [location.pathname]);
 
   useEffect(() => {
-    dispatch(getHabits());
-  }, []);
+    if (user) {
+      dispatch(getHabits());
+    } else {
+      dispatch(removeUser());
+      dispatch(clearHabits());
+    }
+  }, [user]);
 
   return (
     <div

@@ -18,7 +18,9 @@ const initialState: HabitState[] = [];
 const habitSlice = createSlice({
   name: "habitSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    clearHabits: () => [],
+  },
   extraReducers(builder) {
     builder
       .addCase(getHabits.fulfilled, (_, action) => {
@@ -76,3 +78,4 @@ const habitSlice = createSlice({
 });
 
 export default habitSlice.reducer;
+export const { clearHabits } = habitSlice.actions;

@@ -8,47 +8,52 @@ import {
 import { toast } from "sonner";
 
 export type UserState = {
-  userName: string;
-  email: string;
-} | null;
+  user: {
+    userName: string;
+    email: string;
+  } | null;
+};
 
-const initialState: UserState = null;
+const initialState: UserState = { user: null };
 
-const userSlice = createSlice<UserState, {}, string, {}>({
+const userSlice = createSlice({
   name: "userSlice",
   initialState,
-  reducers: {},
+  reducers: {
+    removeUser: (state) => {
+      state.user = null;
+    },
+  },
   extraReducers(builder) {
     builder
-      .addCase(fetchUser.fulfilled, (_, action) => {
-        return {
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.user = {
           userName: action.payload.data.userName,
           email: action.payload.data.email,
         };
       })
-      .addCase(signUpUser.fulfilled, (_, action) => {
+      .addCase(signUpUser.fulfilled, (state, action) => {
         toast(action.payload.message);
-        return {
+        state.user = {
           userName: action.payload.data.userName,
           email: action.payload.data.email,
         };
       })
       .addCase(signUpUser.rejected, (_, action) => {
-        console.log(action.payload);
         toast(
           `${action.payload?.message}: ${action.payload?.error.description}`,
         );
       })
-      .addCase(signOutUser.fulfilled, (_, action) => {
+      .addCase(signOutUser.fulfilled, (state, action) => {
         toast(action.payload.message);
-        return null;
+        state.user = null;
       })
       .addCase(fetchUser.rejected, () => {
         toast("please login to continue");
       })
-      .addCase(signInUser.fulfilled, (_, action) => {
+      .addCase(signInUser.fulfilled, (state, action) => {
         toast(action.payload.message);
-        return {
+        state.user = {
           userName: action.payload.data.userName,
           email: action.payload.data.email,
         };
@@ -63,4 +68,4 @@ const userSlice = createSlice<UserState, {}, string, {}>({
 
 export default userSlice.reducer;
 
-export const {} = userSlice.actions;
+export const { removeUser } = userSlice.actions;
