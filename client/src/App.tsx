@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { useEffect } from "react";
 import { Toaster } from "sonner";
 import { fetchUser } from "./services/apis/auth.api";
+import { getHabits } from "./services/apis/habits.api";
 
 const App = () => {
   const theme = useSelector<RootState>((state) => state.app.theme);
@@ -24,6 +25,10 @@ const App = () => {
         });
     }
   }, [location.pathname]);
+
+  useEffect(() => {
+    dispatch(getHabits());
+  }, []);
 
   return (
     <div

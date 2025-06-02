@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/services/store";
 const Dashboard = () => {
   const userName = useSelector((state: RootState) => state.user?.userName);
+  const habits = useSelector((state: RootState) => state.habits);
   return (
     <div className="space-y-5 p-3">
       <div className="flex items-center justify-between">
@@ -18,18 +19,12 @@ const Dashboard = () => {
         </Link>
       </div>
       <div className="grid grid-cols-[_repeat(auto-fit,minmax(250px,1fr))] gap-3">
-        <HabitCard />
-        <HabitCard />
-        <HabitCard />
-        <HabitCard />
+        {habits.map(({ habitId, habitName }) => (
+          <HabitCard key={habitId} habitName={habitName} />
+        ))}
       </div>
       <p className="font-bold">completed</p>
-      <div className="grid grid-cols-[_repeat(auto-fit,minmax(250px,1fr))] gap-3 brightness-50">
-        <HabitCard />
-        <HabitCard />
-        <HabitCard />
-        <HabitCard />
-      </div>
+      <div className="grid grid-cols-[_repeat(auto-fit,minmax(250px,1fr))] gap-3 brightness-50"></div>
     </div>
   );
 };

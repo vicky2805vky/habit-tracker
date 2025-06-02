@@ -20,7 +20,7 @@ app.use(cookieParser());
 app.use("/auth", authRouter);
 app.use("/user", userRouter);
 app.use("/habits", habitsRouter);
-app.use("/habits/", habitLogRouter);
+app.use("/habits/:habitId/logs", habitLogRouter);
 
 app.use(wildCardRouteHandler);
 app.use(errorRequestHandler);
