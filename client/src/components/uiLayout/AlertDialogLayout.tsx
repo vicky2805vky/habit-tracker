@@ -9,13 +9,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import type { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 
 type alertDialogLayoutProps = {
   trigger: ReactNode;
   title: string;
   description: string;
   buttons: "OK-CANCEL" | "OK" | "CANCEL";
+  dialogAction?: MouseEventHandler<HTMLButtonElement>;
 };
 
 const AlertDialogLayout = ({
@@ -23,6 +24,7 @@ const AlertDialogLayout = ({
   title,
   description,
   buttons,
+  dialogAction,
 }: alertDialogLayoutProps) => {
   return (
     <AlertDialog>
@@ -39,7 +41,9 @@ const AlertDialogLayout = ({
             <AlertDialogCancel>Cancel</AlertDialogCancel>
           )}
           {buttons.includes("OK") && (
-            <AlertDialogAction>Continue</AlertDialogAction>
+            <AlertDialogAction onClick={dialogAction}>
+              Continue
+            </AlertDialogAction>
           )}
         </AlertDialogFooter>
       </AlertDialogContent>

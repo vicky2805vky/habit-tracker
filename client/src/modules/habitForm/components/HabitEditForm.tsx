@@ -1,19 +1,23 @@
 import FormControl from "@/components/uiLayout/FormControl";
 import { habitSchema, type HabitSchema } from "@/constants/HabitFormSchema";
-import { postHabit } from "@/services/apis/habits.api";
-import type { AppDispatch } from "@/services/store";
+import { updateHabit } from "@/services/apis/habits.api";
+import type { AppDispatch, RootState } from "@/services/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router";
 
-const HabitCreateForm = () => {
+const HabitEditForm = () => {
+  const { habitId } = useParams<{ habitId: string }>();
+  const habit = useSelector((state: RootState) =>
+    state.habits.find((habit) => habit.habitId === habitId),
+  );
   const navigate = useNavigate();
   const dispatch: AppDispatch = useDispatch();
   const onSubmit: SubmitHandler<HabitSchema> = (data) => {
-    dispatch(postHabit(data))
+    dispatch(updateHabit({ ...data, id: habitId! }))
       .unwrap()
-      .finally(() => {
+      .then(() => {
         navigate("/");
       });
   };
@@ -24,7 +28,14 @@ const HabitCreateForm = () => {
     handleSubmit,
   } = useForm<HabitSchema>({
     resolver: zodResolver(habitSchema),
+    defaultValues: {
+      habitName: habit?.habitName,
+      startDate: new Date(habit?.startDate || Date.now())
+        .toISOString()
+        .split("T")[0],
+    },
   });
+
   return (
     <form
       id="habit-form"
@@ -50,4 +61,4 @@ const HabitCreateForm = () => {
   );
 };
 
-export default HabitCreateForm;
+export default HabitEditForm;

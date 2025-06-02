@@ -2,10 +2,11 @@ import { GoHeartFill } from "react-icons/go";
 import HabitCardMenu from "./components/HabitCardMenu";
 
 type HabitCardProps = {
+  habitId: string;
   habitName: string;
 };
 
-const HabitCard = ({ habitName }: HabitCardProps) => {
+const HabitCard = ({ habitId, habitName }: HabitCardProps) => {
   return (
     <div className="bg-card text-card-foreground mt-3 flex items-center justify-between rounded-2xl p-5">
       <div className="flex items-center gap-3">
@@ -14,7 +15,7 @@ const HabitCard = ({ habitName }: HabitCardProps) => {
       </div>
       <div className="flex items-center gap-3">
         <input type="checkbox" className="size-5" />
-        <HabitCardMenu />
+        <HabitCardMenu id={habitId} />
       </div>
     </div>
   );

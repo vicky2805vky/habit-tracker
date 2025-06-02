@@ -6,7 +6,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import type { ErrorResponse, SuccessResponse } from "@/constants/ResponseTypes";
 
-type UserPayload = {
+export type UserPayload = {
   userName: string;
   email: string;
 };

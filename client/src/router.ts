@@ -5,6 +5,8 @@ import SignUpForm from "./modules/auth/components/SignUpForm";
 import SignInForm from "./modules/auth/components/SignInForm";
 import Dashboard from "./modules/dashboard/Dashboard";
 import HabitForm from "./modules/habitForm/HabitFormLayout";
+import HabitCreateForm from "./modules/habitForm/components/HabitCreateForm";
+import HabitEditForm from "./modules/habitForm/components/HabitEditForm";
 
 export const router = createBrowserRouter([
   {
@@ -24,8 +26,18 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: "/habit/create",
+        path: "/habit/",
         Component: HabitForm,
+        children: [
+          {
+            path: "/habit/create",
+            Component: HabitCreateForm,
+          },
+          {
+            path: "/habit/:habitId/edit",
+            Component: HabitEditForm,
+          },
+        ],
       },
     ],
   },

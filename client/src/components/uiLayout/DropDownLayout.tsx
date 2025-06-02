@@ -24,8 +24,9 @@ const DropDownLayout = ({ trigger, label, items }: dropDownLayoutProps) => {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{label}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        {items.map((item) => (
+        {items.map((item, i) => (
           <DropdownMenuItem
+            key={i}
             onSelect={(e) => {
               item.isModal && e.preventDefault();
             }}

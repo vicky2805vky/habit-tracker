@@ -20,7 +20,7 @@ const Dashboard = () => {
       </div>
       <div className="grid grid-cols-[_repeat(auto-fit,minmax(250px,1fr))] gap-3">
         {habits.map(({ habitId, habitName }) => (
-          <HabitCard key={habitId} habitName={habitName} />
+          <HabitCard key={habitId} {...{ habitName, habitId }} />
         ))}
       </div>
       <p className="font-bold">completed</p>
