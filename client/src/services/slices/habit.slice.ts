@@ -81,7 +81,6 @@ const habitSlice = createSlice({
       })
       .addCase(markHabit.fulfilled, (state, action) => {
         toast("habit marked successfully");
-        console.log(action.payload);
         return state.map((habit) => {
           if (habit.habitId === action.payload.habitId) {
             return { ...habit, completed: action.payload.completed };

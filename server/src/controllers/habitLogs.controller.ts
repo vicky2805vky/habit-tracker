@@ -12,12 +12,17 @@ export type RequestParams = {
   habitId: string;
 };
 
-export const createLog = async (req: Request<RequestParams>, res: Response) => {
+export const createLog = async (
+  req: Request<RequestParams, {}, {}, { date: string }>,
+  res: Response
+) => {
   try {
     const { habitId } = req.params;
+    const date = setDateToMidnight(validateDate(req.query.date)).toISOString();
     await validateModelId(habitId, Habit);
     const log = new HabitLog({
       habitId,
+      date,
     });
     await log.save();
     sendSuccessResponse(res, "log created successfully", log, 201);

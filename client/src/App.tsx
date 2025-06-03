@@ -36,7 +36,7 @@ const App = () => {
       dispatch(removeUser());
       dispatch(clearHabits());
     }
-  }, [user]);
+  }, [user, appDate]);
 
   return (
     <div

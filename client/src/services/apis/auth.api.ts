@@ -17,7 +17,6 @@ export const signUpUser = createAsyncThunk<
   { rejectValue: ErrorResponse }
 >("auth/sign-up", async (data: ExtendedFormFields, thunkApi) => {
   try {
-    console.log(data);
     const url = import.meta.env.VITE_SERVER_BASE_URL + "/auth/signup";
     const res = await axios.post<SuccessResponse<UserPayload>>(url, data, {
       withCredentials: true,

@@ -120,7 +120,7 @@ export const markHabit = createAsyncThunk<
 >("habitLog/mark", async (data, thunkApi) => {
   try {
     const query = `?date=${encodeURIComponent(data.date)}`;
-    const url = `${import.meta.env.VITE_SERVER_BASE_URL}/habits/${data.habitId}/logs${data.completed ? "" : query}`;
+    const url = `${import.meta.env.VITE_SERVER_BASE_URL}/habits/${data.habitId}/logs${query}`;
     if (data.completed) {
       await axios.post(url, {}, { withCredentials: true });
     } else {
