@@ -11,6 +11,7 @@ export type HabitState = {
   habitId: string;
   habitName: string;
   startDate: string;
+  completed: boolean;
 };
 
 const initialState: HabitState[] = [];
@@ -24,11 +25,12 @@ const habitSlice = createSlice({
   extraReducers(builder) {
     builder
       .addCase(getHabits.fulfilled, (_, action) => {
-        return action.payload.data.map((habit) => {
+        return action.payload.map((habit) => {
           return {
             habitId: habit._id,
             habitName: habit.habitName,
             startDate: habit.startDate,
+            completed: habit.completed,
           };
         });
       })
@@ -38,6 +40,7 @@ const habitSlice = createSlice({
           habitId: _id,
           habitName,
           startDate,
+          completed: false,
         };
         state.push(newHabit);
         toast(action.payload.message);
@@ -54,6 +57,7 @@ const habitSlice = createSlice({
               habitId: action.payload.data._id,
               habitName: action.payload.data.habitName,
               startDate: action.payload.data.startDate,
+              completed: habit.completed,
             };
           return habit;
         });

@@ -13,19 +13,40 @@ type HabitReqBody = {
   startDate: string;
 };
 
-export const getHabits = createAsyncThunk("habits/get", async (_, thunkApi) => {
-  try {
-    const url = import.meta.env.VITE_SERVER_BASE_URL + "/habits";
-    const res = await axios.get<SuccessResponse<HabitPayload[]>>(url, {
-      withCredentials: true,
-    });
-    return res.data;
-  } catch (error) {
-    if (axios.isAxiosError(error))
-      return thunkApi.rejectWithValue(error.response?.data);
-    return thunkApi.rejectWithValue(error);
-  }
-});
+interface HabitWithStatus extends HabitPayload {
+  completed: boolean;
+}
+
+export const getHabits = createAsyncThunk(
+  "habits/get",
+  async (date: string, thunkApi) => {
+    try {
+      const query = `?date=${encodeURIComponent(date)}`;
+      const url = `${import.meta.env.VITE_SERVER_BASE_URL}/habits${query}`;
+
+      const res = await axios.get<SuccessResponse<HabitPayload[]>>(url, {
+        withCredentials: true,
+      });
+
+      const habitsWithStatus = Promise.all(
+        res.data.data.map(async (habit) => {
+          const url = `${import.meta.env.VITE_SERVER_BASE_URL}/habits/${habit._id}/logs${query}`;
+          const res = await axios.get<SuccessResponse<HabitWithStatus>>(url, {
+            withCredentials: true,
+          });
+          return res.data.data;
+        }),
+      );
+
+      return habitsWithStatus;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return thunkApi.rejectWithValue(error.response?.data);
+      }
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
 
 export const postHabit = createAsyncThunk<
   SuccessResponse<HabitPayload>,

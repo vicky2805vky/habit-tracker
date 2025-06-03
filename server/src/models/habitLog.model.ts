@@ -25,6 +25,8 @@ const habitLogSchema = new Schema<IHabitLog, HabitLogModel>({
   },
 });
 
+habitLogSchema.index({ date: 1, habitId: 1 });
+
 habitLogSchema.pre("save", async function (next) {
   const { date, habitId } = this;
   const existingHabit = await HabitLog.findOne({ habitId, date });

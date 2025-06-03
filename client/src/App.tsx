@@ -11,8 +11,9 @@ import { removeUser } from "./services/slices/user.slice";
 import { clearHabits } from "./services/slices/habit.slice";
 
 const App = () => {
-  const theme = useSelector<RootState>((state) => state.app.theme);
-  const user = useSelector<RootState>((state) => state.user.user);
+  const theme = useSelector((state: RootState) => state.app.theme);
+  const user = useSelector((state: RootState) => state.user.user);
+  const appDate = useSelector((state: RootState) => state.app.appDate);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch: AppDispatch = useDispatch();
@@ -30,7 +31,7 @@ const App = () => {
 
   useEffect(() => {
     if (user) {
-      dispatch(getHabits());
+      dispatch(getHabits(appDate));
     } else {
       dispatch(removeUser());
       dispatch(clearHabits());
