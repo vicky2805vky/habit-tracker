@@ -12,6 +12,6 @@ habitLogRouter.use(authoriseUser);
 
 habitLogRouter.post("/", createLog);
 habitLogRouter.get("/", getLog);
-habitLogRouter.delete("/:id", deleteLog);
+habitLogRouter.delete("/", deleteLog);
 
 export default habitLogRouter;

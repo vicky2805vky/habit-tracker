@@ -106,3 +106,30 @@ export const deleteHabit = createAsyncThunk<
     return thunkApi.rejectWithValue(error as any);
   }
 });
+
+type MarkHabitPayload = {
+  habitId: string;
+  date: string;
+  completed: boolean;
+};
+
+export const markHabit = createAsyncThunk<
+  MarkHabitPayload,
+  MarkHabitPayload,
+  { rejectValue: ErrorResponse }
+>("habitLog/mark", async (data, thunkApi) => {
+  try {
+    const query = `?date=${encodeURIComponent(data.date)}`;
+    const url = `${import.meta.env.VITE_SERVER_BASE_URL}/habits/${data.habitId}/logs${data.completed ? "" : query}`;
+    if (data.completed) {
+      await axios.post(url, {}, { withCredentials: true });
+    } else {
+      await axios.delete(url, { withCredentials: true });
+    }
+    return data;
+  } catch (error) {
+    if (axios.isAxiosError(error))
+      return thunkApi.rejectWithValue(error.response?.data);
+    return thunkApi.rejectWithValue(error as any);
+  }
+});

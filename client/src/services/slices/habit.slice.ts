@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   deleteHabit,
   getHabits,
+  markHabit,
   postHabit,
   updateHabit,
 } from "../apis/habits.api";
@@ -74,6 +75,21 @@ const habitSlice = createSlice({
         return state.filter((habit) => habit.habitId !== action.payload);
       })
       .addCase(deleteHabit.rejected, (_, action) => {
+        toast(
+          `${action.payload?.message}: ${action.payload?.error.description || ""}`,
+        );
+      })
+      .addCase(markHabit.fulfilled, (state, action) => {
+        toast("habit marked successfully");
+        console.log(action.payload);
+        return state.map((habit) => {
+          if (habit.habitId === action.payload.habitId) {
+            return { ...habit, completed: action.payload.completed };
+          }
+          return habit;
+        });
+      })
+      .addCase(markHabit.rejected, (_, action) => {
         toast(
           `${action.payload?.message}: ${action.payload?.error.description || ""}`,
         );

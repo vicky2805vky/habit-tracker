@@ -19,8 +19,8 @@ const Dashboard = () => {
         </Link>
       </div>
       <div className="grid grid-cols-[_repeat(auto-fit,minmax(250px,1fr))] gap-3">
-        {habits.map(({ habitId, habitName }) => (
-          <HabitCard key={habitId} {...{ habitName, habitId }} />
+        {habits.map(({ habitId, habitName, completed }) => (
+          <HabitCard key={habitId} {...{ habitName, habitId, completed }} />
         ))}
       </div>
       <p className="font-bold">completed</p>

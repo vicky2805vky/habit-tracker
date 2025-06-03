@@ -6,10 +6,10 @@ import { Habit } from "../models/habit.model";
 import { sendSuccessResponse } from "../utils/sendSuccessResponse";
 import AppError from "../utils/AppError";
 import { setDateToMidnight } from "../utils/setDateToMidnight";
+import { validateDate } from "../validators/validateDate";
 
 export type RequestParams = {
   habitId: string;
-  id: string;
 };
 
 export const createLog = async (req: Request<RequestParams>, res: Response) => {
@@ -33,14 +33,8 @@ export const getLog = async (
   try {
     const { habitId } = req.params;
     const { date } = req.query;
-    if (!date || isNaN(new Date(date).getTime()))
-      throw new AppError(
-        400,
-        "invalid date",
-        "bad request",
-        "the given Date is not valid"
-      );
 
+    validateDate(date);
     const { habitName, _id, startDate } = await validateModelId(habitId, Habit);
 
     const formattedDate = setDateToMidnight(new Date(date));
@@ -56,12 +50,27 @@ export const getLog = async (
     sendErrorResponse(res, error);
   }
 };
-export const deleteLog = async (req: Request<RequestParams>, res: Response) => {
+export const deleteLog = async (
+  req: Request<RequestParams, {}, {}, { date: string }>,
+  res: Response
+) => {
   try {
-    const { habitId, id } = req.params;
+    const { habitId } = req.params;
+    const { date } = req.query;
+    const dateObject = setDateToMidnight(validateDate(date)).toISOString();
     await validateModelId(habitId, Habit);
-    await validateModelId(id, HabitLog);
-    const habitLog = await HabitLog.findOneAndDelete({ habitId, _id: id });
+    const habitLog = await HabitLog.findOneAndDelete({
+      habitId,
+      date: dateObject,
+    });
+
+    if (!habitLog)
+      throw new AppError(
+        404,
+        "habitlog not found",
+        "not found",
+        "the provided habit is not logged on the provided date"
+      );
     sendSuccessResponse(res, "data deleted successfully", habitLog);
   } catch (error) {
     sendErrorResponse(res, error);
