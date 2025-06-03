@@ -3,16 +3,10 @@ import AppError from "../utils/AppError";
 import { setDateToMidnight } from "../utils/setDateToMidnight";
 import { checkIsUpdateAllowed } from "../utils/checkIsUpdateAllowed";
 import { Request } from "express";
-import { isValidObjectId } from "mongoose";
 import { validateModelId } from "./validateModelId";
 
 const throwInvalidDataError = (description: string) => {
-  throw new AppError(
-    400,
-    "action failed due to invalid request",
-    "bad request",
-    description
-  );
+  throw new AppError(400, "invalid request data", "bad request", description);
 };
 
 export const validateCreateHabit = (habit: IHabit) => {

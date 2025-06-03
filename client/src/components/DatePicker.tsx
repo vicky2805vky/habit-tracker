@@ -16,7 +16,6 @@ interface DatePickerProps {
   onChange: (date: Date | undefined) => void;
   label?: string;
   description?: string;
-  disabledDates?: (date: Date) => boolean;
 }
 
 export function DatePicker({
